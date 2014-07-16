@@ -163,7 +163,7 @@ void SkipList<type,MAXLEVEL>::remove(const_value_type &value)
 	SkipListNode *update[MAXLEVEL];
 	SkipListNode *node = head;
 
-	for(int i = m_level - 1; i >= 0; --i){
+	for(int i = MAXLEVEL; i >= 0; --i){
 		while(node->level[i].forward && node->level[i].forward->value < value){
 			node = node->level[i].forward;
 		}
@@ -177,7 +177,9 @@ void SkipList<type,MAXLEVEL>::remove(const_value_type &value)
 		for(int i = 0; i < m_level ; ++i){
 			update[i]->level[i].forward = node->level[i].forward;
 		}	
-		
+		while(m+level > 1 && head->level[m_level -1].forward == NULL){
+			m_level--;
+		}
 		delete node;
 		m_size--;
 	}
